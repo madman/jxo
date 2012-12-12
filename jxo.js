@@ -4,11 +4,17 @@
 
 
 (function ($) {
-  $.fn.jxo = function () {
-    return this.each(function () {
-      // TODO: code here
-    });
-  };
+    $.fn.jxo = function (params) {
+        var params = $.extend({}, params);
+        
+        // traverse all nodes
+        return this.each(function () {
+            var self = $(this);
+            
+            // TODO: code here
+            
+        });
+    };
 })(jQuery);
 
 
