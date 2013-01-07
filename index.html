@@ -6,8 +6,35 @@
         <link href="styles.css" media="screen" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
         <script type="text/javascript" src="jxo.js"></script>
+        <script type="text/javascript">
+            $(function() {
+               $('#jxo').jxo(); 
+            });
+        </script>
     </head>
     <body>
         <h1>Tick-tack-toe as jquery plugin demo</h1>
+        <div id="jxo">
+            <h2></h2>
+            <table class="board">
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>    
+        </div>
     </body>
 </html>
