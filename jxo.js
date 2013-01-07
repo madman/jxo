@@ -29,55 +29,62 @@
         
         // traverse all nodes
         return this.each(function () {
-            var self = $(this);
+            var self = $(this),
+                jxo = self; // store container
             
-            if (options) {
-                $.extend(settings, options);
-            }
             
             var _init = function() {
                 // TODO: check board
-                
-                var board = self.find('table.board');
-                
-                board.find('td').each(function(index) {
-                    var self = $(this), 
-                    o = '',
-                    x = '';
-                    for (var i = 0; i <= index; i++) {
-                        if (i == index) {
-                            o = '1' + o;
-                            x = '2' + x;
-                        } else {
-                            o = '0' + o;
-                            x = '0' + x;
-                        }
-                    } 
-                   
-                    o = '0c' + o;
-                    x = '0c' + x;
-                    self.data('o', o).data('x', x);
-                    if (settings.debug) {
-                        self
-                        .append($('<div />', {
-                            'class': 'hint'
-                        }));
-                        self.find('.hint')
-                        .append($('<div />', {
-                            'text': o
-                        }))
-                        .append($('<div />', {
-                            'text': x
-                        }));
+                if (!jxo.data('initilized')) {
+                    if (options) {
+                        $.extend(settings, options);
                     }
-                });
+
+                    // store settings
+                    jxo.data('settings', settings);
+                
+                    var board = jxo.find('table.board');
+                
+                    board.find('td').each(function(index) {
+                        var self = $(this), 
+                        o = '',
+                        x = '';
+                        for (var i = 0; i <= index; i++) {
+                            if (i == index) {
+                                o = '1' + o;
+                                x = '2' + x;
+                            } else {
+                                o = '0' + o;
+                                x = '0' + x;
+                            }
+                        } 
+                   
+                        o = '0c' + o;
+                        x = '0c' + x;
+                        self.data('o', o).data('x', x);
+                        if (settings.debug) {
+                            self
+                            .append($('<div />', {
+                                'class': 'hint'
+                            }));
+                            self.find('.hint')
+                            .append($('<div />', {
+                                'text': o
+                            }))
+                            .append($('<div />', {
+                                'text': x
+                            }));
+                        }
+                    });
+                    
+                    jxo.data('initilized', true);
+                } else {
+                    // load previosly saved settings 
+                    settings = jxo.data('settings');
+                }
             };
             
             _init();
-        // TODO: code here
-            
-        
-            
         });
     };
 })(jQuery);
