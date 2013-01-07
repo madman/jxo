@@ -6,62 +6,44 @@
 
 
 (function ($) {
-    $.fn.jxo = function (options) {
-        var settings = {
-            state: '0c000000000',
-            startState: '0c000000000',
-            x: 'x',
-            o: 'o',
-            _: '',
-            modex: 'human', // human|bot [human by default] 
-            modeo: 'bot', // human|bot [bot by default]
-            first: 'x',  // x|o 
-            pause: 1000,
-            debug: true
-        };
-        
-        var parse = function(val) {
-            if (val = val.match(/^Oc(\d+)/i)) {
-                return parseInt(val, 3);  
-            }
-            return 0;
-        };
-        
-        // traverse all nodes
-        return this.each(function () {
-            var self = $(this),
-                jxo = self; // store container
-            
-            
-            var _init = function() {
-                // TODO: check board
-                if (!jxo.data('initilized')) {
-                    if (options) {
-                        $.extend(settings, options);
-                    }
+    var settings = {
+        state: 0,
+        startState: 0,
+        x: 'x',
+        o: 'o',
+        _: '',
+        modex: 'human', // human|bot [human by default] 
+        modeo: 'bot', // human|bot [bot by default]
+        first: 'x',  // x|o 
+        pause: 1000,
+        debug: true
+    };
 
-                    // store settings
+    var methods = {
+        init: function(options) {
+            return this.each(function(){
+                var self = $(this),
+                jxo = self; 
+                if (!jxo.data('initilized')) {
+                    $.extend(settings, options || {});
                     jxo.data('settings', settings);
                 
                     var board = jxo.find('table.board');
-                
                     board.find('td').each(function(index) {
-                        var self = $(this), 
-                        o = '',
-                        x = '';
+                        var self = $(this), xo = {
+                            x: '', 
+                            o: ''
+                        };
                         for (var i = 0; i <= index; i++) {
-                            if (i == index) {
-                                o = '1' + o;
-                                x = '2' + x;
-                            } else {
-                                o = '0' + o;
-                                x = '0' + x;
-                            }
-                        } 
+                            $.each(xo, function(key, value) {
+                                xo[key] = ((i == index) ? ('0c' + (('x' == key) ? 2 : 1)): 0) + value;
+                            });
+                        }
                    
-                        o = '0c' + o;
-                        x = '0c' + x;
-                        self.data('o', o).data('x', x);
+                        self
+                        .data('o', xo.o)
+                        .data('x', xo.x);
+                        
                         if (settings.debug) {
                             self
                             .append($('<div />', {
@@ -69,22 +51,35 @@
                             }));
                             self.find('.hint')
                             .append($('<div />', {
-                                'text': o
+                                'text': xo.o
                             }))
                             .append($('<div />', {
-                                'text': x
+                                'text': xo.x
                             }));
                         }
                     });
                     
                     jxo.data('initilized', true);
                 } else {
-                    // load previosly saved settings 
                     settings = jxo.data('settings');
                 }
-            };
-            
-            _init();
-        });
+            });
+        },
+        parse: function(val) {
+            if (val = /^(?:0c)(\d+)/i.exec(val)) {
+                return parseInt(val[1], 3);  
+            }
+            return 0;
+        }
+    };
+    
+    $.fn.jxo = function (method) {
+        if (typeof method === 'object') {
+            return methods.init.apply(this, method);
+        } else if (methods[method]) {
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else {
+            return methods.init.apply(this, arguments);
+        }   
     };
 })(jQuery);
