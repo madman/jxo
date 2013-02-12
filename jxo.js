@@ -1,5 +1,5 @@
 /** 
- * JXO - v0.1 - 2012-12-12
+ * JXO - v0.1.1 - 2013-02-12
  * http://devcomm.org.ua/jxo
  * Copyright (c) 2012 Devcomm 
  */
@@ -19,7 +19,7 @@
         debug: true
     };
 
-    var methods = {
+    var plugin = {
         init: function(options) {
             return this.each(function(){
                 var self = $(this),
@@ -28,8 +28,8 @@
                     $.extend(settings, options || {});
                     jxo.data('settings', settings);
                 
-                    var board = jxo.find('table.board');
-                    board.find('td').each(function(index) {
+                    var b = jxo.find('table.board');
+                    b.find('td').each(function(index) {
                         var self = $(this), xo = {
                             x: '', 
                             o: ''
@@ -59,7 +59,7 @@
                         }
                     });
                     
-                    funcs.bindBoard(board);
+                    board.bind(b);
                     
                     jxo.data('initilized', true);
                 } else {
@@ -75,14 +75,11 @@
         }
     };
     
-    var funcs = {
-        bindBoard: function(board) {
-            board.on('click', function(event) {
-                console.log(event.currentTarget);
-                console.log(event.delegateTarget);
-                console.log(event.relatedTarget);
-                console.log(event.target);
-                console.log(event.which);
+    var board = {
+        bind: function(b) {
+            b.on('click', 'td', function(event) {
+                var target = event.target; 
+                console.log($(target).prop("tagName"));
             });
             
         }
@@ -90,11 +87,11 @@
     
     $.fn.jxo = function (method) {
         if (typeof method === 'object') {
-            return methods.init.apply(this, method);
-        } else if (methods[method]) {
-            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            return plugin.init.apply(this, method);
+        } else if (plugin[method]) {
+            return plugin[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else {
-            return methods.init.apply(this, arguments);
+            return plugin.init.apply(this, arguments);
         }   
     };
 })(jQuery);
