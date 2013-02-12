@@ -78,8 +78,11 @@
     var funcs = {
         bindBoard: function(board) {
             board.on('click', function(event) {
-                console.log(event.currentTarget)
-                console.log(event.event.delegateTarget)
+                console.log(event.currentTarget);
+                console.log(event.delegateTarget);
+                console.log(event.relatedTarget);
+                console.log(event.target);
+                console.log(event.which);
             });
             
         }
