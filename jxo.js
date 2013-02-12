@@ -59,6 +59,8 @@
                         }
                     });
                     
+                    funcs.bindBoard(board);
+                    
                     jxo.data('initilized', true);
                 } else {
                     settings = jxo.data('settings');
@@ -70,6 +72,16 @@
                 return parseInt(val[1], 3);  
             }
             return 0;
+        }
+    };
+    
+    var funcs = {
+        bindBoard: function(board) {
+            board.on('click', function(event) {
+                console.log(event.currentTarget)
+                console.log(event.event.delegateTarget)
+            });
+            
         }
     };
     
