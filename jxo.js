@@ -82,6 +82,16 @@
                 console.log($(target).prop("tagName"));
             });
             
+        },
+        x: function(action) {
+            
+        },
+        o: function(action) {
+            
+        },
+        status: function(b, value) {
+            var value = value || false;
+            return b.data('status') || '0c0';
         }
     };
     
