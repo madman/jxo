@@ -18,12 +18,15 @@
         pause: 1000,
         debug: true
     };
+    
+    var statuses =  ['x', 'o', 'end'];
 
     var plugin = {
         init: function(options) {
             return this.each(function(){
                 var self = $(this),
-                jxo = self; 
+                jxo = self,
+                status = 'x'; 
                 if (!jxo.data('initilized')) {
                     $.extend(settings, options || {});
                     jxo.data('settings', settings);
@@ -94,6 +97,10 @@
             return b.data('status') || '0c0';
         }
     };
+    
+    var game = { // game object
+        // todo: 
+    }
     
     $.fn.jxo = function (method) {
         if (typeof method === 'object') {
